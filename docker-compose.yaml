@@ -1,0 +1,32 @@
+# EXAMPLE 1 - Install MQTT
+# Here we'll be installing the Eclipse Mosquitto MQTT Broker
+# See the in-line comments for explanations on the config.
+
+# This time we've define a Docker Compose version.
+version: '3.5'
+services:
+# We start by defining the service with a name
+  mosquitto:
+    # Here we reference the image we want to pull from the registry
+    image: eclipse-mosquitto
+    # We give the container an explicit name instead of auto-generated
+    container_name: mosquitto
+    # For fun, we're using a different restart policy here.
+    # Curious? What's the difference between 'always' and 'unless-stopped'?
+    restart: unless-stopped
+    # We map the host port tcp/1883 to the container port tcp/1883
+    ports:
+      - 1883:1883
+    volumes:
+      # This bind mount is being mapped from the host to the container. Now
+      # files in this directory are shared between the host and container.
+      # Notice the ':ro' at the end which specificies the directory as read-only
+      # to the container
+      - ./mosquitto/config:/mosquitto/config:ro
+      # These instead are persistent volumes we've defined in the 'volumes'
+      # section below which are mapped to directories within the container
+      - mosquitto_data:/mosquitto/data
+      - mosquitto_log:/mosquitto/log
+volumes:
+  mosquitto_data:
+  mosquitto_log:
