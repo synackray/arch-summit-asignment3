@@ -20,9 +20,7 @@ services:
     volumes:
       # This bind mount is being mapped from the host to the container. Now
       # files in this directory are shared between the host and container.
-      # Notice the ':ro' at the end which specificies the directory as read-only
-      # to the container
-      - ./mosquitto/config:/mosquitto/config:ro
+      - ./mosquitto/config:/mosquitto/config
       # These instead are persistent volumes we've defined in the 'volumes'
       # section below which are mapped to directories within the container
       - mosquitto_data:/mosquitto/data
